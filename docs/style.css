@@ -11,7 +11,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    height: auto;
 }
 
 .container {
@@ -64,6 +64,10 @@ header p {
 
 .spacer {
     height: 1rem;
+}
+
+.page_img {
+    max-width: 500px;
 }
 
 footer {
