@@ -62,6 +62,10 @@ header p {
     color: #6a7d8c;
 }
 
+.spacer {
+    height: 1rem;
+}
+
 footer {
     margin-top: 1rem;
 }
