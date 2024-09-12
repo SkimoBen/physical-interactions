@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A0</title>
+    <link rel="stylesheet" href="A0.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <link>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>A0</h1>
+            <h2>Created by Ben Pearman</h2>
+            <p>Hello Arduino!</p>
+        </header>
+        <section class="content">
+            <div class="box">
+                <h2>About</h2>
+                <p>This is a simple demonstration of how I got started with Arduino. I've never used an Arduino before, but I'm studying under one of the great sages of HCI; Lora Oehlberg, and she instructed us to go buy some stuff, since that's what we'll be using for most of this course. I can get behind it, it's way more fun than a textbook right? </p>
+                <p></p>
+            </div>
+            <div class="box">
+                <h2>Phase 1 - Get The Hooch</h2>
+                <p>After a bit of poking around I decided I'd head over to the local electronics hobbyist store and see what they recommended. I came out with a heavy bag, and lighter pockets. </p>
+                <div class="img_div">
+                    <img src="/docs/A0/assets/solarbotics.jpg">
+                </div>
+                <p>The Hooch in question:</p>
+                <div class="img_div">
+                    <img src="/docs/A0/assets/hooch.jpg">
+                </div>
+                <p>I also got a bunch of capacitors and diodes because...safety I guess? </p>
+            </div>
+            <div class="box">
+                <h2>Phase 2 - Wait, I don't have an Arduino</h2>
+                <p>I sort of lied about not using an Arduino, I've dabbled with an Esspruino Puck.js which is fitted with a bunch of sensors. I remembered that was pretty cool to use so I opted for an Arduino board that had similar sensors. Actually I opted for the board that had pretty much ALL the sensors. I wasn't sure what I'd be using it for in this class yet so I figured I should be ready for anything. </p>
+                <div class="img_div">
+                    <img src="/docs/A0/assets/nano_box.jpg">
+                </div>
+                
+            </div>
+
+            <div class="box">
+                <h2>Phase 3: Build a thing</h2>
+                <p>Here's the meat and potato's, the real deal. This is what you came here for, unless you came here to ask for rock climbing beta, in which case you should just DM me on instagram.</p>
+                <div class="spacer"></div>
+                
+                <p>A0 has pretty broad criteria, her majesty instructed us to build some sort of trinket involving an LED, a diffuser, a button, and a creative surprise. Now I could have kept it simple and slammed a push button in a bread board, stuck the red wire in my toaster, and called it a day, but I know a thing or two about creative surprises. </p>
+                <div class="img_div">
+                    <img src = "assets/potentiometer.jpg">
+                </div>
+                <p>That right there, is what we call potential. Actually, it's a potentiometer, and it's a way to control the amount of voltage passing through a circuit, at least that's what chatGPT told me just now.</p>
+                <p>So basically, instead of using a normal push button, I thought it would be cool to use a potentiometer so that my LED is dimmable, and it totally worked! But there is one problem, there's technically no diffuser in this setup.</p>
+            </div>
+            
+            <div class="box">
+                <h2>Phase 4: Improve the thing</h2>
+                <p>I was sitting there pondering to myself "what's a cool way to diffuse light? Come on Ben, you used to be a professional photographer, you can think of something...". As I perched on my stilts, perfectly balanced, I became mesmerized by the RGB fans inside my computers water cooler, and that's when it clicked. I could use the same voltage supply that's powering the LED to power a motor, which would spin a fan blade. The fan blade itself IS the diffuser.</p>
+                <div class="spacer"></div>
+                
+                <p>Now here's the thing, I actually can't power the LED and the motor off the "same" power supply, since the Nano only outputs 3.3v max. The DC motor I got can take anywhere between 3-9v, and it generally isn't advisable to power motors directly off of the Arduino board anyway. I found <a href="https://www.youtube.com/watch?v=XrJ_zLWFGFw&t=499s">this tutorial</a> on Youtube to be really helpful in learning the basics of DC motor control with a potentiometer. </p>
+                <div class="img_div">
+                    <div class = div_cite>
+                        <img class="img_cite" src = "assets/sciBuddies.png">
+                        <p class="p_cite">Circuit Schematic from the Science Buddies Youtube <a href="https://www.youtube.com/watch?v=XrJ_zLWFGFw&t=499s">tutorial</a>.</p>
+                    </div>
+                    
+                </div>
+                
+            </div>
+            
+            <div class="box">
+                <h2>Phase 5: Going off the rails</h2>
+                <p>At a certain point you should probably stop and ask yourself if the thing you're building still has real world value or if you've completely lost the plot. I however, don't need to ask myself that because this project has intrinsic value, in the that it's teaching me about hardware. So far I've learned that I like it.</p>
+                <div class="spacer"></div>
+                
+                <p>I made a few modifications to the Science Buddies schematic so that I could power the LED with the signal voltage coming from the Arduino's digital pin. Since it's just a little LED this worked out fine. That same signal voltage is running to a transistor, which routes the same amount of voltage to the motor, but instead of taking it from the Arduino it takes it from the battery.</p>
+                <div class="spacer"></div>
+                <p>Behold, the final schematic for my first Arduino project:</p>
+                <p id="funny_p">Do not be alarmed by the potato, it can't hurt you here</p>
+                
+                <div class="img_div">
+                    <div class = div_cite>
+                        <img class="img_cite" src = "assets/circ_schematic.png">
+                        <p class="p_cite">My final schematic.</p>
+                    </div>
+                    
+                </div>
+                
+            </div>
+            
+            <div class="box">
+                <h2>Phase 6: The Demo</h2>
+                <p>The astute observer likely would have noticed that there is no potentiometer in my circuit schematic, alas I lost all of my potential in exchange for something even more tanglible.  </p>
+                <div class="spacer"></div>
+                
+                <p>Remember how I said I got the "Nano Sense 33 BLE Rev 2" (what is with the Arduino names) because it has all the sensors embedded on the board? Well I was playing around with those at some point (probably while helping an elderly woman cross the street) and I had the idea to control the voltage signal with a sensors input. After experimenting a bit with a few of them, I decided the best one to use would be the <a href="https://docs.arduino.cc/tutorials/nano-33-ble-sense/proximity-sensor/">APDS9960 proximity sensor</a> since the gesture of moving something closer to a source felt like a natural metaphor for increasing power. </p>
+                <div class="spacer"></div>
+                <p>A handy thing about the Arduino library for this sensor is that it returns a value between 0 and 255, which as I recently learned is the scale used by the digital pins for pulse width modulation (PWM). PWM is  how you digitally control voltage, since a digital signal is either max output or zero output, you just modulate that signal at a certain frequency to get an analog-like signal.</p>
+                
+                <div class="spacer"></div>
+                
+                <p id="bigTime">The result? Something I like to call the <span id = "italic">Vibro-ProxiLite-9000</span></p>
+                
+                <div class="img_div">
+                    <video width= 80% controls src="assets/dark_video.mov"></video>
+                </div>
+                
+                <div class="img_div">
+                    <video width= 80% controls src="assets/light_video.mov"></video>
+                </div>
+                
+                <div class="spacer"></div>
+                <div class="box">
+                <h2>Phase 7: We're Rich.</h2>
+                <p>I forgot to mention one thing, the code for this project is incredibly simple, like I really couldn't believe how chill it was to set this stuff up in the Arduino IDE. Of course, it's only chill because I'm using the API for the APDS9960 sensor, I've had to reconfigure similar libraries for IMU's in the past and that can be a massive pain... </p>
+                <p>Anyway, here's the code for the project:</p>
+                <div class="spacer"></div>
+                    
+                  <div class="code-container">
+                    <pre>
+                        <code>
+#include &lt;Arduino_APDS9960.h&gt;
+
+const int motorpin = 2;
+
+void setup() {
+
+  Serial.begin(9600);
+  pinMode(motorpin, OUTPUT);
+  
+  while (!Serial);
+  if (!APDS.begin()) {
+            Serial.println("Error initializing APDS9960 sensor!");
+      }
+}
+
+void loop() {
+
+     if (APDS.proximityAvailable()) {
+          int proximity = APDS.readProximity();
+          Serial.print("Proximity: ");
+          Serial.println(proximity);
+          
+          analogWrite(motorpin, proximity);
+     }
+}
+
+                        </code>
+                    </pre>
+                </div>
+                
+                <div class="spacer"></div>
+                <p></p>
+
+                
+            </div>
+                
+            </div>
+        </section>
+        <footer>
+            
+
+        </footer>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>
