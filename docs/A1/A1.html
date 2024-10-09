@@ -1,5 +1,156 @@
 <!DOCTYPE html>
 <html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Turning a Skateboard Into an Instrument</title>
+    <link href="A1.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cutive+Mono&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Red+Hat+Mono&display=swap" rel="stylesheet">
+    <style>
+        
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Turning a Skateboard Into an Instrument</h1>
+        <h2>built by ben</h2>
+        <div class="video-container">
+            <video controls>
+                <source src="" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+        </div>
+        <p>
+            I was recently tasked with creating a new type of instrument that takes a physical input, and processes that input digitally to create sound. You could say that an electric guitar sort of fits into this category, but I was going for something more digital, and a lot more experimental. Part of the inspiration for this project came from Malloch & Wanderley’s “T-Stick” [1] which was basically a PVC pipe that they covered in capacitive sensors allowing people to play it.
+        </p>
+        <p>
+            As I paced around my house wondering what other types of shapes or objects would work well as an instrument, I started thinking about how I like to experience the physical world and if there was any way I could translate those activities into sound. Rock climbing, skiing, riding a bike, they seemed like the weren’t maneuverable enough to “perform” as an instrument. I combed through all the activities I’ve tried over the years and then finally the answer seemed totally obvious, it had to be a skateboard.
+            As a bit of a side note I’m going to say something that might sound controversial, but it serves to justify my choice.
+        </p>
+        
+        <div class="callout">
+            Skateboarding is the most technically difficult sport that exists. 
+        </div>
+        <p>
+        When I realized that, it seemed obvious that a skateboard could be used as an instrument. Let me explain.</p>
+        
+        <p>
+        I’ve tried pretty much every sport you can imagine at some point, and I’ve also taught a lot of people other technical sports like skiing and rock climbing, and I am absolutely convinced that none of them are more challenging, and that’s why it’s perfect for this project. Here’s an analogy: if you gave an average person a violin and told them to play hot cross buns, or any other elementary song, it would sound like a chalkboard playing DDR with a drawer of cutlery. They would be lucky if they could play the first two notes in anything close to the right rhythm. That’s skateboarding. Almost every person I’ve tried to teach how to skateboard has landed on their butt within about 10 seconds. And it’s not just the learning curve, the ceiling is ridiculously high.
+        </p>
+        
+        <p>
+        I want to mention that I’m using the word “technical” deliberately, since I don’t think it’s the most challenging outright. Obviously, I am physically stronger than the 14 year old skateboarders in the Olympics, but the difference between our technique is heaven and earth.
+        I could go on about this for a while, but I’ve said enough to justify my argument for choosing a skateboard. In short, I think there’s a lot of similarities between it and playing an instrument. Music also plays a huge role in skateboarding culture, which you can sort of pick up on by watching films like <a style = "color: #ff3b8b" href="https://www.youtube.com/watch?v=e5I9C6ntrxA&t=227s">Pretty Sweet</a> [1], anyway, onwards into development.
+        </p>
+        
+        <h3>How To Make Sound</h3>
+        <p>
+        The key physical input that a skateboard creates is motion, so all I had to do was attach an inertial measurement unit (IMU) to a skateboard and that data would be easy to get. The hard part was mapping that input into sound. I experimented with a few methods here like linking it to a DAW through MIDI, but I really wanted it to be mobile. It just didn’t feel like a real instrument if there was a USB cable connecting the skateboard to the computer. Sure, I could use Bluetooth MIDI, but then I’m still tethered to a laptop which feels almost as bad.
+        <span style="color: #ff3b3b">The only solution was to go rogue</span>, it had to be fully off grid.
+
+        </p>
+        <div class="image-block image-block-right image-block-list">
+            
+            <div>
+                <p>
+                    Here’s what’s inside the box:
+                </p>
+                <ul>
+                    <li>Arduino Nano 33 Sense BLE Rev 2</li>
+                    <li>Breadboard</li>
+                    <li>MOSFET transistor</li>
+                    <li>9v Battery</li>
+                    <li>3.7v LiPo Battery</li>
+                    <li>3 Watt Speaker</li>
+                    <li>Diode</li>
+                    <li>My tears</li>
+
+                </ul>
+            </div>
+            <img src="https://via.placeholder.com/400x300" alt="Tech Image">
+            
+        </div>
+        
+        <div class="image-block image-block-left">
+            <p>
+                The circuit schematic.
+            </p>
+            <img style="padding: 10px"src="assets/A1_Scheme.svg" alt="Circuit Schematic">
+        </div>
+
+        <div class="image-block image-block-right">
+            <p>
+                I designed the box myself in Blender to fit all these parts while still being compact enough to get bolted under a skateboard. In case you didn’t know, they don’t have a lot of clearance between the bottom of the deck and the ground. I also needed it to be removable for testing and replacing batteries, but it had to be secure enough that it would at least stay on while I was riding it. The initial design included a locking pin, but it turned out that my tolerances were small enough that the friction alone did a good enough job of holding it all together.
+            </p>
+            <img src="https://via.placeholder.com/500x400" alt="Tech Image">
+        </div>
+
+        <p>
+            So, everything I need is in there, but how does it actually make any sound? Well, when I started building it, I didn’t know. But I figured most speakers seem to have 2 wires going to them so it must be possible somehow. And it was, I found some demo code written by Paul Badger [3] where he demonstrates how to create a square wave using the Arduino’s PWM capability. All that was left was working out the mapping between IMU data and sound frequency.
+        </p>
+        
+        <div class="image-block image-block image-block-list">
+            <div>
+                <p>
+                Accelerometers return a vector of G-force values for the x, y, z axis, since I set the sensitivity of the IMU to ± 4 G’s, I know I’ll always get a float in that range. Here’s the mapping I decided on:
+
+            </p>
+            <ul>
+                <li>X axis: Changes the note</li>
+                <li>Y axis: Changes the octave</li>
+                <li>Z axis: Perform a glissando from the current</li>
+            </ul>
+            </div>
+            
+            <img src="https://via.placeholder.com/500x400" alt="Tech Image">
+        </div>
+
+        <p>
+            Here’s the final sketch that I’m running:
+        </p>
+        
+        <div class="code-container">
+                            <pre>
+                                <code>
+        #include &lt;Arduino_APDS9960.h&gt;
+
+        const int motorpin = 2;
+
+        void setup() {
+
+          Serial.begin(9600);
+          pinMode(motorpin, OUTPUT);
+
+          while (!Serial);
+          if (!APDS.begin()) {
+                    Serial.println("Error initializing APDS9960 sensor!");
+              }
+        }
+
+        void loop() {
+
+             if (APDS.proximityAvailable()) {
+                  int proximity = APDS.readProximity();
+                  Serial.print("Proximity: ");
+                  Serial.println(proximity);
+
+                  analogWrite(motorpin, proximity);
+             }
+        }
+
+                                </code>
+                            </pre>
+                        </div>
+        <p>
+            Thanks for reading!
+        </p>
+    </div>
+</body>
+</html>
+<!--
+<!DOCTYPE html>
+<html lang="en">
     <head>
         <meta charset="UTF-8" />
         <title>Title</title>
@@ -9,7 +160,9 @@
     </head>
     <body>
         <h1 class = "top-h1">Turning A Skateboard Into An Instrument</h1>
-    
+        
+        <h2></h2>
     
     </body>
 </html>
+-->
