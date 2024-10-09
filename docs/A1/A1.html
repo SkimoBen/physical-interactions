@@ -15,11 +15,17 @@
     <div class="container">
         <h1>Turning a Skateboard Into an Instrument</h1>
         <h2>built by ben</h2>
+        <iframe width="560" height="315" src="https://www.youtube.com/embed/dQw4w9WgXcQ?si=gRyRv11XgqiSvC7h" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
         <div class="video-container">
-            <video controls>
-                <source src="" type="video/mp4">
-                Your browser does not support the video tag.
-            </video>
+            <iframe 
+                width="560" height="315" 
+                src="https://www.youtube.com/watch?v=XiaUDZurlJw" 
+                title="Turning a Skateboard Into an Instrument Video" 
+                frameborder="0" 
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                allowfullscreen>
+            </iframe>
         </div>
         <p>
             I was recently tasked with creating a new type of instrument that takes a physical input, and processes that input digitally to create sound. You could say that an electric guitar sort of fits into this category, but I was going for something more digital, and a lot more experimental. Part of the inspiration for this project came from Malloch & Wanderley’s “T-Stick” [1] which was basically a PVC pipe that they covered in capacitive sensors allowing people to play it.
@@ -113,31 +119,143 @@
         <div class="code-container">
                             <pre>
                                 <code>
-        #include &lt;Arduino_APDS9960.h&gt;
-
-        const int motorpin = 2;
-
-        void setup() {
-
-          Serial.begin(9600);
-          pinMode(motorpin, OUTPUT);
-
-          while (!Serial);
-          if (!APDS.begin()) {
-                    Serial.println("Error initializing APDS9960 sensor!");
-              }
-        }
-
-        void loop() {
-
-             if (APDS.proximityAvailable()) {
-                  int proximity = APDS.readProximity();
-                  Serial.print("Proximity: ");
-                  Serial.println(proximity);
-
-                  analogWrite(motorpin, proximity);
-             }
-        }
+#include "Arduino_BMI270_BMM150.h"
+#define outpin 9   // audio out to speaker or amp
+float notes[] = {
+  14080,    // A_note
+  14917.2,  // AS_note
+  15804.3,  // B_note
+  16744,    // C_note
+  17739.7,  // CS_note
+  18794.5,  // D_note
+  19912.1,  // DS_note
+  21096.2,  // E_note
+  22350.6,  // F_note
+  23679.6,  // FS_note
+  25087.7,  // G_note
+  26579.5,  // GS_note
+  28160,    // A2_note
+  29834.5,  // A2S_note
+  31608.5,  // B2_note
+  33488.1,  // C2_note
+  35479.4,  // C2S_note
+  37589.1,  // D2_note
+  39824.3,  // D2S_note
+  42192.3,  // E2_note
+  44701.2,  // F2_note
+  47359.3,  // F2S_note
+  50175.4,  // G2_note
+  53159,    // G2S_note
+  56320     // A3_note
+};
+//octaves  - corresponds to piano octaves
+float oct8 = 4;
+float oct7 = 8;
+float oct6 = 16;
+float oct5 = 32;
+float oct4 = 64;
+float oct3 = 128;
+float oct2 = 256;
+float oct1 = 512;
+float oct0 = 1024;
+float octs[] = {
+  4, //   8
+  8, //   7
+  16, //  6
+  32, //  5
+  64, //  4
+  128, // 3
+  256, // 2
+  512, // 1
+  1024 // 0
+};
+float note = 261.63; // start at middle c. This is the main note which will get changed,
+int oct = oct3; // start in the third octave
+float ax_note = note;
+int current_note_index = 12;
+int oct_index = 4;
+void setup() {
+  //pinMode(outpin, OUTPUT);
+  Serial.begin(9600);
+  //while (!Serial);
+  Serial.println("Started");
+  if (!IMU.begin()) {
+    Serial.println("Failed to initialize IMU!");
+    while (1);
+  }
+}
+void loop(){
+  float ax, ay, az;
+  // Get the IMU data
+  if (IMU.accelerationAvailable()) {
+    IMU.readAcceleration(ax, ay, az);
+    //ax_note = map(ax, -4, 4, 0, 24);      // X axis
+       // Z axis
+    //oct = map(ay, -4, 4, 2, 6);           // y axis
+  }
+  if (ax < -1 || ax > 1 || az > 2 || az < 0.8 || ay > 1 || ay < -1) {
+    // Control the note
+    if (ax > 1 || ax < -1) {
+      int ax_index = map(ax, -4.0, 4.0, -4, 4);
+      current_note_index += ax_index;
+      current_note_index = constrain(current_note_index, 0, 24);
+    }
+    // Control the octave
+    if (ay > 1 || ay < -1) {
+      int ay_index = map(ay, -4.0, 4.0, -2, 2);
+      oct_index += ay_index;
+      oct_index = constrain(oct_index, 0, 7);
+      oct = octs[oct_index];
+    }
+    note = notes[current_note_index];
+    note = note / oct;
+    // Perform Glissando with the Z Axis
+    if (az > 2 || az < 0.8) {
+      long az_note = map(az, -4.0, 4.0, 10.0, 1000.0);
+      //int newNote = notes[az_note];
+      glissando((int)note, (int)az_note);
+      note = az_note;
+    }
+    Serial.print(note);
+    Serial.print((char)9);
+    Serial.print(current_note_index);
+    Serial.print((char)9);
+    Serial.print(oct_index);
+    Serial.print((char)9);
+    Serial.print(az);
+    Serial.print((char)9);
+    Serial.println(ay);
+    if (note > 10 ) {
+      freqout((int)note, 1);
+    }
+  }
+}
+// Paul Badgers Freqout function
+void freqout(int freq, int t)  // freq in hz, t in ms
+{
+  int hperiod;                               //calculate 1/2 period in us
+  long cycles, i;
+  pinMode(outpin, OUTPUT);                   // turn on output pin
+  hperiod = (500000 / freq) - 7;             // subtract 7 us to make up for digitalWrite overhead
+  cycles = ((long)freq * (long)t) / 1000;    // calculate cycles
+  for (i=0; i<= cycles; i++){              // play note for t ms
+    digitalWrite(outpin, HIGH);
+    delayMicroseconds(hperiod);
+    digitalWrite(outpin, LOW);
+    delayMicroseconds(hperiod - 1);     // - 1 to make up for digitaWrite overhead
+  }
+pinMode(outpin, INPUT);                // shut off pin to avoid noise from other operations
+}
+void glissando(int startFreq, int endFreq) {
+  int duration = 25;     // Total duration of the glissando in milliseconds
+  int steps = 50;         // Number of frequency steps
+  int delayPerStep = duration / steps;  // Duration per frequency step
+  int freqIncrement = (endFreq - startFreq) / steps;
+  for (int i = 0; i <= steps; i++) {
+    int currentFreq = startFreq + (freqIncrement * i);
+    freqout(currentFreq, delayPerStep);
+  }
+}
 
                                 </code>
                             </pre>
