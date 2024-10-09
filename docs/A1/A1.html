@@ -7,9 +7,53 @@
     <link href="A1.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Cutive+Mono&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Red+Hat+Mono&display=swap" rel="stylesheet">
-    <style>
-        
-    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://threejs.org/examples/js/loaders/OBJLoader.js"></script>
+    <script>
+        // Create a scene
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / 500, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer();
+        renderer.setSize(window.innerWidth, 500);  // Width of the container, height fixed
+        document.getElementById('3d-model-container').appendChild(renderer.domElement);
+
+        // Add a light
+        const light = new THREE.DirectionalLight(0xffffff, 1);
+        light.position.set(1, 1, 1).normalize();
+        scene.add(light);
+
+        // Load the .obj file
+        const loader = new THREE.OBJLoader();
+        loader.load('assets/Case_Design.obj', function (object) {
+            scene.add(object);
+        }, undefined, function (error) {
+            console.error('Error loading OBJ:', error);
+        });
+
+        // Set camera position
+        camera.position.z = 5;
+
+        // Animate the model
+        function animate() {
+            requestAnimationFrame(animate);
+            if (scene.children[1]) { // Ensure object is loaded
+                scene.children[1].rotation.x += 0.01;
+                scene.children[1].rotation.y += 0.01;
+            }
+            renderer.render(scene, camera);
+        }
+        animate();
+
+        // Handle window resize
+        window.addEventListener('resize', () => {
+            const container = document.getElementById('3d-model-container');
+            const width = container.clientWidth;
+            const height = container.clientHeight;
+            renderer.setSize(width, height);
+            camera.aspect = width / height;
+            camera.updateProjectionMatrix();
+        });
+    </script>
 </head>
 <body>
     <div class="container">
@@ -17,7 +61,7 @@
         <h2>built by ben</h2>
    
         <div class="video-container">
-            <iframe   src="https://www.youtube.com/embed/XiaUDZurlJw?si=q4mV3Ipq9o9qFJ9Q" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            <iframe   src="https://www.youtube.com/embed/XiaUDZurlJw?si=q4mV3Ipq9o9qFJ9Q" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
         </div>
         <p>
             I was recently tasked with creating a new type of instrument that takes a physical input, and processes that input digitally to create sound. You could say that an electric guitar sort of fits into this category, but I was going for something more digital, and a lot more experimental. Part of the inspiration for this project came from Malloch & Wanderley’s “T-Stick” [1] which was basically a PVC pipe that they covered in capacitive sensors allowing people to play it.
@@ -74,18 +118,18 @@
             <p>
                 The circuit schematic.
             </p>
-            <img style="padding: 10px"src="assets/A1_Scheme.svg" alt="Circuit Schematic">
+            <img style="padding: 10px" src="assets/A1_Scheme.svg" alt="Circuit Schematic">
         </div>
 
         <div class="image-block image-block-right">
             <p>
                 I designed the box myself in Blender to fit all these parts while still being compact enough to get bolted under a skateboard. In case you didn’t know, they don’t have a lot of clearance between the bottom of the deck and the ground. I also needed it to be removable for testing and replacing batteries, but it had to be secure enough that it would at least stay on while I was riding it. The initial design included a locking pin, but it turned out that my tolerances were small enough that the friction alone did a good enough job of holding it all together.
             </p>
-            <img src="https://via.placeholder.com/500x400" alt="Tech Image">
+            <div id="3d-model-container" style="width: 100%; height: 500px;"></div>
         </div>
 
         <p>
-            So, everything I need is in there, but how does it actually make any sound? Well, when I started building it, I didn’t know. But I figured most speakers seem to have 2 wires going to them so it must be possible somehow. And it was, I found some demo code written by Paul Badger [3] where he demonstrates how to create a square wave using the Arduino’s PWM capability. All that was left was working out the mapping between IMU data and sound frequency.
+            So, everything I need is in there, <span style="color: #ff3b3b">but how does it actually make any sound?</span> Well, when I started building it, I didn’t know. But I figured most speakers seem to have 2 wires going to them so it must be possible somehow. And it was, I found some demo code written by Paul Badger [3] where he demonstrates how to create a square wave using the Arduino’s PWM capability. All that was left was working out the mapping between IMU data and sound frequency.
         </p>
         
         <div class="image-block image-block image-block-list">
@@ -109,170 +153,149 @@
         </p>
         
         <div class="code-container">
-                            <pre>
-                                <code>
-#include "Arduino_BMI270_BMM150.h"
-#define outpin 9   // audio out to speaker or amp
-float notes[] = {
-  14080,    // A_note
-  14917.2,  // AS_note
-  15804.3,  // B_note
-  16744,    // C_note
-  17739.7,  // CS_note
-  18794.5,  // D_note
-  19912.1,  // DS_note
-  21096.2,  // E_note
-  22350.6,  // F_note
-  23679.6,  // FS_note
-  25087.7,  // G_note
-  26579.5,  // GS_note
-  28160,    // A2_note
-  29834.5,  // A2S_note
-  31608.5,  // B2_note
-  33488.1,  // C2_note
-  35479.4,  // C2S_note
-  37589.1,  // D2_note
-  39824.3,  // D2S_note
-  42192.3,  // E2_note
-  44701.2,  // F2_note
-  47359.3,  // F2S_note
-  50175.4,  // G2_note
-  53159,    // G2S_note
-  56320     // A3_note
-};
-//octaves  - corresponds to piano octaves
-float oct8 = 4;
-float oct7 = 8;
-float oct6 = 16;
-float oct5 = 32;
-float oct4 = 64;
-float oct3 = 128;
-float oct2 = 256;
-float oct1 = 512;
-float oct0 = 1024;
-float octs[] = {
-  4, //   8
-  8, //   7
-  16, //  6
-  32, //  5
-  64, //  4
-  128, // 3
-  256, // 2
-  512, // 1
-  1024 // 0
-};
-float note = 261.63; // start at middle c. This is the main note which will get changed,
-int oct = oct3; // start in the third octave
-float ax_note = note;
-int current_note_index = 12;
-int oct_index = 4;
-void setup() {
-  //pinMode(outpin, OUTPUT);
-  Serial.begin(9600);
-  //while (!Serial);
-  Serial.println("Started");
-  if (!IMU.begin()) {
-    Serial.println("Failed to initialize IMU!");
-    while (1);
-  }
-}
-void loop(){
-  float ax, ay, az;
-  // Get the IMU data
-  if (IMU.accelerationAvailable()) {
-    IMU.readAcceleration(ax, ay, az);
-    //ax_note = map(ax, -4, 4, 0, 24);      // X axis
-       // Z axis
-    //oct = map(ay, -4, 4, 2, 6);           // y axis
-  }
-  if (ax < -1 || ax > 1 || az > 2 || az < 0.8 || ay > 1 || ay < -1) {
-    // Control the note
-    if (ax > 1 || ax < -1) {
-      int ax_index = map(ax, -4.0, 4.0, -4, 4);
-      current_note_index += ax_index;
-      current_note_index = constrain(current_note_index, 0, 24);
-    }
-    // Control the octave
-    if (ay > 1 || ay < -1) {
-      int ay_index = map(ay, -4.0, 4.0, -2, 2);
-      oct_index += ay_index;
-      oct_index = constrain(oct_index, 0, 7);
-      oct = octs[oct_index];
-    }
-    note = notes[current_note_index];
-    note = note / oct;
-    // Perform Glissando with the Z Axis
-    if (az > 2 || az < 0.8) {
-      long az_note = map(az, -4.0, 4.0, 10.0, 1000.0);
-      //int newNote = notes[az_note];
-      glissando((int)note, (int)az_note);
-      note = az_note;
-    }
-    Serial.print(note);
-    Serial.print((char)9);
-    Serial.print(current_note_index);
-    Serial.print((char)9);
-    Serial.print(oct_index);
-    Serial.print((char)9);
-    Serial.print(az);
-    Serial.print((char)9);
-    Serial.println(ay);
-    if (note > 10 ) {
-      freqout((int)note, 1);
-    }
-  }
-}
-// Paul Badgers Freqout function
-void freqout(int freq, int t)  // freq in hz, t in ms
-{
-  int hperiod;                               //calculate 1/2 period in us
-  long cycles, i;
-  pinMode(outpin, OUTPUT);                   // turn on output pin
-  hperiod = (500000 / freq) - 7;             // subtract 7 us to make up for digitalWrite overhead
-  cycles = ((long)freq * (long)t) / 1000;    // calculate cycles
-  for (i=0; i<= cycles; i++){              // play note for t ms
-    digitalWrite(outpin, HIGH);
-    delayMicroseconds(hperiod);
-    digitalWrite(outpin, LOW);
-    delayMicroseconds(hperiod - 1);     // - 1 to make up for digitaWrite overhead
-  }
-pinMode(outpin, INPUT);                // shut off pin to avoid noise from other operations
-}
-void glissando(int startFreq, int endFreq) {
-  int duration = 25;     // Total duration of the glissando in milliseconds
-  int steps = 50;         // Number of frequency steps
-  int delayPerStep = duration / steps;  // Duration per frequency step
-  int freqIncrement = (endFreq - startFreq) / steps;
-  for (int i = 0; i <= steps; i++) {
-    int currentFreq = startFreq + (freqIncrement * i);
-    freqout(currentFreq, delayPerStep);
-  }
-}
+            <pre>
+                <code>
+        #include "Arduino_BMI270_BMM150.h"
+        #define outpin 9   // audio out to speaker or amp
+        float notes[] = {
+        14080,    // A_note
+        14917.2,  // AS_note
+        15804.3,  // B_note
+        16744,    // C_note
+        17739.7,  // CS_note
+        18794.5,  // D_note
+        19912.1,  // DS_note
+        21096.2,  // E_note
+        22350.6,  // F_note
+        23679.6,  // FS_note
+        25087.7,  // G_note
+        26579.5,  // GS_note
+        28160,    // A2_note
+        29834.5,  // A2S_note
+        31608.5,  // B2_note
+        33488.1,  // C2_note
+        35479.4,  // C2S_note
+        37589.1,  // D2_note
+        39824.3,  // D2S_note
+        42192.3,  // E2_note
+        44701.2,  // F2_note
+        47359.3,  // F2S_note
+        50175.4,  // G2_note
+        53159,    // G2S_note
+        56320     // A3_note
+        };
+        //octaves  - corresponds to piano octaves
+        float oct8 = 4;
+        float oct7 = 8;
+        float oct6 = 16;
+        float oct5 = 32;
+        float oct4 = 64;
+        float oct3 = 128;
+        float oct2 = 256;
+        float oct1 = 512;
+        float oct0 = 1024;
+        float octs[] = {
+        4, //   8
+        8, //   7
+        16, //  6
+        32, //  5
+        64, //  4
+        128, // 3
+        256, // 2
+        512, // 1
+        1024 // 0
+        };
+        float note = 261.63; // start at middle c. This is the main note which will get changed,
+        int oct = oct3; // start in the third octave
+        float ax_note = note;
+        int current_note_index = 12;
+        int oct_index = 4;
+        void setup() {
+        //pinMode(outpin, OUTPUT);
+        Serial.begin(9600);
+        //while (!Serial);
+        Serial.println("Started");
+        if (!IMU.begin()) {
+        Serial.println("Failed to initialize IMU!");
+        while (1);
+        }
+        }
+        void loop(){
+        float ax, ay, az;
+        // Get the IMU data
+        if (IMU.accelerationAvailable()) {
+        IMU.readAcceleration(ax, ay, az);
+        //ax_note = map(ax, -4, 4, 0, 24);      // X axis
+        // Z axis
+        //oct = map(ay, -4, 4, 2, 6);           // y axis
+        }
+        if (ax &lt; -1 || ax &gt; 1 || az &gt; 2 || az &lt; 0.8 || ay &gt; 1 || ay &lt; -1) {
+        // Control the note
+        if (ax &gt; 1 || ax &lt; -1) {
+        int ax_index = map(ax, -4.0, 4.0, -4, 4);
+        current_note_index += ax_index;
+        current_note_index = constrain(current_note_index, 0, 24);
+        }
+        // Control the octave
+        if (ay &gt; 1 || ay &lt; -1) {
+        int ay_index = map(ay, -4.0, 4.0, -2, 2);
+        oct_index += ay_index;
+        oct_index = constrain(oct_index, 0, 7);
+        oct = octs[oct_index];
+        }
+        note = notes[current_note_index];
+        note = note / oct;
+        // Perform Glissando with the Z Axis
+        if (az &gt; 2 || az &lt; 0.8) {
+        long az_note = map(az, -4.0, 4.0, 10.0, 1000.0);
+        //int newNote = notes[az_note];
+        glissando((int)note, (int)az_note);
+        note = az_note;
+        }
+        Serial.print(note);
+        Serial.print((char)9);
+        Serial.print(current_note_index);
+        Serial.print((char)9);
+        Serial.print(oct_index);
+        Serial.print((char)9);
+        Serial.print(az);
+        Serial.print((char)9);
+        Serial.println(ay);
+        if (note &gt; 10 ) {
+        freqout((int)note, 1);
+        }
+        }
+        }
+        // Paul Badgers Freqout function
+        void freqout(int freq, int t)  // freq in hz, t in ms
+        {
+        int hperiod;                               //calculate 1/2 period in us
+        long cycles, i;
+        pinMode(outpin, OUTPUT);                   // turn on output pin
+        hperiod = (500000 / freq) - 7;             // subtract 7 us to make up for digitalWrite overhead
+        cycles = ((long)freq * (long)t) / 1000;    // calculate cycles
+        for (i=0; i&lt;= cycles; i++){              // play note for t ms
+        digitalWrite(outpin, HIGH);
+        delayMicroseconds(hperiod);
+        digitalWrite(outpin, LOW);
+        delayMicroseconds(hperiod - 1);     // - 1 to make up for digitaWrite overhead
+        }
+        pinMode(outpin, INPUT);                // shut off pin to avoid noise from other operations
+        }
+        void glissando(int startFreq, int endFreq) {
+        int duration = 25;     // Total duration of the glissando in milliseconds
+        int steps = 50;         // Number of frequency steps
+        int delayPerStep = duration / steps;  // Duration per frequency step
+        int freqIncrement = (endFreq - startFreq) / steps;
+        for (int i = 0; i &lt;= steps; i++) {
+        int currentFreq = startFreq + (freqIncrement * i);
+        freqout(currentFreq, delayPerStep);
+        }
+        }
 
-                                </code>
-                            </pre>
-                        </div>
-        <p>
-            Thanks for reading!
-        </p>
+                </code>
+            </pre>
+        </div>
     </div>
 </body>
 </html>
-<!--
-<!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <title>Title</title>
-        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400&display=swap" rel="stylesheet">
-
-        <link rel="stylesheet" href="A1.css">
-    </head>
-    <body>
-        <h1 class = "top-h1">Turning A Skateboard Into An Instrument</h1>
-        
-        <h2></h2>
-    
-    </body>
-</html>
--->
