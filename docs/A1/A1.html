@@ -17,7 +17,7 @@
         }
       }
     </script>
-    <script src = "main.js"></script>
+    
 </head>
 <body>
     <div class="container">
@@ -25,7 +25,7 @@
         <h2>built by ben</h2>
    
         <div class="video-container">
-            <iframe   src="https://www.youtube.com/embed/XiaUDZurlJw?si=q4mV3Ipq9o9qFJ9Q" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            <iframe width="560" height="315" src="https://www.youtube.com/embed/69r0n7SjhuU?si=jzJVGw-_njam8iUS" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
         </div>
         <p>
             I was recently tasked with creating a new type of instrument that takes a physical input, and processes that input digitally to create sound. You could say that an electric guitar sort of fits into this category, but I was going for something more digital, and a lot more experimental. Part of the inspiration for this project came from Malloch & Wanderley’s “T-Stick” [1] which was basically a PVC pipe that they covered in capacitive sensors allowing people to play it.
@@ -60,7 +60,7 @@
             
             <div>
                 <p>
-                    Here’s what’s inside the box:
+                    <span style="color: #ff3b3b">Here’s what’s inside the box:</span>
                 </p>
                 <ul>
                     <li>Arduino Nano 33 Sense BLE Rev 2</li>
@@ -74,22 +74,28 @@
 
                 </ul>
             </div>
-            <img src="https://via.placeholder.com/400x300" alt="Tech Image">
+            <img src="assets/box.JPG" style = "height: 500px" alt="Tech box">
             
         </div>
         
         <div class="image-block image-block-left">
             <p>
-                The circuit schematic.
+                <span style="color: #ff3b3b">The circuit schematic.</span>
             </p>
             <img style="padding: 10px" src="assets/A1_Scheme.svg" alt="Circuit Schematic">
         </div>
-
-        <div class="image-block image-block-right">
+        
+        <div class="horizontal-flex">
             <p>
-                I designed the box myself in Blender to fit all these parts while still being compact enough to get bolted under a skateboard. In case you didn’t know, they don’t have a lot of clearance between the bottom of the deck and the ground. I also needed it to be removable for testing and replacing batteries, but it had to be secure enough that it would at least stay on while I was riding it. The initial design included a locking pin, but it turned out that my tolerances were small enough that the friction alone did a good enough job of holding it all together.
+                I designed the box myself in Blender to fit all these parts while still being compact enough to get 
+                bolted under a skateboard. In case you didn’t know, they don’t have a lot of clearance between the bottom 
+                of the deck and the ground. I also needed it to be removable for testing and replacing batteries, 
+                but it had to be secure enough that it would at least stay on while I was riding it. The initial 
+                design included a locking pin, but it turned out that my tolerances were small enough that the 
+                friction alone did a good enough job of holding it all together.
             </p>
-            <div id="3d-model-container" style="width: 100%; height: 500px;"></div>
+            <div id="3d-model-container" style="width: 50%; height: 400px;"></div>
+            <script type="module" src ="main.js"></script>
         </div>
 
         <p>
@@ -109,11 +115,11 @@
             </ul>
             </div>
             
-            <img src="https://via.placeholder.com/500x400" alt="Tech Image">
+            <img src="assets/drawing.JPG" alt="drawing">
         </div>
 
         <p>
-            Here’s the final sketch that I’m running:
+            <span style="color: #ff3b3b">Here’s the final sketch that I’m running:</span>
         </p>
         
         <div class="code-container">
@@ -260,6 +266,11 @@
                 </code>
             </pre>
         </div>
+        <h3>References</h3>
+        <p>[1] Joseph Malloch and Marcelo M. Wanderley. 2007. The T-Stick: from musical interface to musical instrument. In Proceedings of the 7th international conference on New interfaces for musical expression (NIME '07). Association for Computing Machinery, New York, NY, USA, 66–70. https://doi.org/10.1145/1279740.1279751</p>
+        <p>[2] Girl & Chocolate Skateboards. 2012. Pretty Sweet. </p>
+        <p>[3] Paul Badger. 2007. Audio Basics with Arduino. Retrieved from https://docs.arduino.cc/learn/programming/audio/</p>
     </div>
+
 </body>
 </html>

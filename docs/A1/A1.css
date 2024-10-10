@@ -112,16 +112,30 @@ p {
     padding: 15px;
     overflow-x: auto;
     max-width: 100%;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 pre {
     margin: 0;
 }
+canvas { display: block; }
+.horizontal-flex {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.horizontal-flex p {
+    flex: 1;
+    margin-right: 20px; /* Add spacing between the text and model container */
+}
 
 #3d-model-container {
-    width: 400px;
-    height: 400px
+    flex-shrink: 1;
+    max-width: 462px;
+    height: 500px;
+    width: 100%;
 }
 
 /* Mobile Breakpoints */
