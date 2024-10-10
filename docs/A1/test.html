@@ -17,21 +17,27 @@
     </script>
 </head>
 <body>
-
+<div id="3d-model-container" style="width: 462px; height: 500px;"></div>
 <script type="module">
     // Import necessary modules
-    import * as THREE from 'three';
-    import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js';
-    import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
+    import * as THREE from 'https://unpkg.com/three@0.146.0/build/three.module.js';
+    import { OBJLoader } from 'https://unpkg.com/three@0.146.0/examples/jsm/loaders/OBJLoader.js';
+    import { OrbitControls } from 'https://unpkg.com/three@0.146.0/examples/jsm/controls/OrbitControls.js';
 
     // Set up scene, camera, and renderer
+    const element = document.getElementById("3d-model-container");  // Move this line above
     const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(
-        75, window.innerWidth / window.innerHeight, 0.1, 1000
-    );
+    const camera = new THREE.PerspectiveCamera(75, element.clientWidth / element.clientHeight, 0.1, 1000);
     const renderer = new THREE.WebGLRenderer({ antialias: true });
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    document.body.appendChild(renderer.domElement);
+    renderer.setSize(element.clientWidth, element.clientHeight);
+    element.appendChild(renderer.domElement);
+
+    // Handle window resize
+    window.addEventListener('resize', function () {
+        camera.aspect = element.clientWidth / element.clientHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(element.clientWidth, element.clientHeight);
+    });
 
     // Add OrbitControls
     const controls = new OrbitControls(camera, renderer.domElement);
@@ -39,15 +45,28 @@
     controls.dampingFactor = 0.05;
 
     // Position the camera
-    camera.position.set(0, 0, 5);
+    camera.position.set(0.2, 0.2, 0.2);
     controls.update();
 
     // Add lighting
-    const ambientLight = new THREE.AmbientLight(0x404040); // Soft white light
+    const ambientLight = new THREE.AmbientLight(0x262626); // Soft white light
     scene.add(ambientLight);
 
-    const directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
+    const directionalLight = new THREE.DirectionalLight(0xe28a8a, 0.5);
+    const secondLight = new THREE.DirectionalLight(0x8ae0e2, 0.5)
+    const thirdLight = new THREE.DirectionalLight(0x98e28a, 0.5)
     scene.add(directionalLight);
+    scene.add(secondLight);
+    scene.add(thirdLight);
+    // Move the directional light
+    directionalLight.position.set(1, 0, 0);
+
+    // Move the second light
+    secondLight.position.set(0, 1, 0);
+    // Move the third light
+    secondLight.position.set(0, 0, 1);
+ 
+    scene.background = new THREE.Color(0xedf0f1); // Light blue background
 
     // Load the OBJ file
     const loader = new OBJLoader();
@@ -72,12 +91,7 @@
     }
     animate();
 
-    // Handle window resize
-    window.addEventListener('resize', function () {
-        camera.aspect = window.innerWidth / window.innerHeight;
-        camera.updateProjectionMatrix();
-        renderer.setSize(window.innerWidth, window.innerHeight);
-    });
+ 
 </script>
 
 </body>

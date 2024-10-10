@@ -9,51 +9,15 @@
     <link href="https://fonts.googleapis.com/css2?family=Red+Hat+Mono&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://threejs.org/examples/js/loaders/OBJLoader.js"></script>
-    <script>
-        // Create a scene
-        const scene = new THREE.Scene();
-        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / 500, 0.1, 1000);
-        const renderer = new THREE.WebGLRenderer();
-        renderer.setSize(window.innerWidth, 500);  // Width of the container, height fixed
-        document.getElementById('3d-model-container').appendChild(renderer.domElement);
-
-        // Add a light
-        const light = new THREE.DirectionalLight(0xffffff, 1);
-        light.position.set(1, 1, 1).normalize();
-        scene.add(light);
-
-        // Load the .obj file
-        const loader = new THREE.OBJLoader();
-        loader.load('assets/Case_Design.obj', function (object) {
-            scene.add(object);
-        }, undefined, function (error) {
-            console.error('Error loading OBJ:', error);
-        });
-
-        // Set camera position
-        camera.position.z = 5;
-
-        // Animate the model
-        function animate() {
-            requestAnimationFrame(animate);
-            if (scene.children[1]) { // Ensure object is loaded
-                scene.children[1].rotation.x += 0.01;
-                scene.children[1].rotation.y += 0.01;
-            }
-            renderer.render(scene, camera);
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "https://cdn.jsdelivr.net/npm/three@v0.149.0/build/three.module.js",
+          "three/addons/": "https://cdn.jsdelivr.net/npm/three@v0.149.0/examples/jsm/"
         }
-        animate();
-
-        // Handle window resize
-        window.addEventListener('resize', () => {
-            const container = document.getElementById('3d-model-container');
-            const width = container.clientWidth;
-            const height = container.clientHeight;
-            renderer.setSize(width, height);
-            camera.aspect = width / height;
-            camera.updateProjectionMatrix();
-        });
+      }
     </script>
+    <script src = "main.js"></script>
 </head>
 <body>
     <div class="container">

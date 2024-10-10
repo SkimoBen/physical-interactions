@@ -119,6 +119,11 @@ pre {
     margin: 0;
 }
 
+#3d-model-container {
+    width: 400px;
+    height: 400px
+}
+
 /* Mobile Breakpoints */
 @media (max-width: 768px) {
     h1 {
