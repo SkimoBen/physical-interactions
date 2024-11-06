@@ -79,8 +79,6 @@ mtlLoader.load('assets/TopoViz.mtl', (materials) => {
     );
 });
 
-// Render loop and camera position display
-const positionDisplay = document.getElementById("position-display");
 
 function animate() {
     requestAnimationFrame(animate);
