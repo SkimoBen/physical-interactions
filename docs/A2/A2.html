@@ -21,9 +21,11 @@
 </head>
 <body>
     <div class="container">
-        <h1>TopoViz: A Physical Data Visualization For Mountain Topographies</h1>
-        <h2>built by ben</h2>
-   
+        <div class="top-section">
+            <h1>TopoViz: A Physical Data Visualization For Mountain Topographies</h1>
+            <h2 class = "subtitle">built by ben</h2>
+        </div>
+        <br><br><br>
         <div class="video-container">
             <iframe width="560" height="315" src="https://www.youtube.com/embed/B-QN0wNVcVk?si=gqvEY1a-ApqsoisQ" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
         </div>
@@ -134,11 +136,56 @@
             
         </div>
         
-        <div class="image-block image-block-left">
+        <div class="image-block image-block-right">
             <p>
                 <span style="color: #ff3b3b">The circuit schematic.</span>
             </p>
             <img style="padding: 10px" src="assets/A2_Circuit.svg" alt="Circuit Schematic">
+        </div>
+      
+      <div class="image-block image-block-left">
+            <p>
+                <span style="color: #ff3b3b">Early lead screw design.</span> 
+                <br>
+              The problem with this design became obvious as soon as I turned on one of the stepper motors. 
+              The 28BYJ-48 motors have a pretty high gear ratio, it takes 4096 steps (in half step mode) to do one 
+              full revolution at the shaft. This screw is single threaded and had a pitch of about 5mm's. Because 
+              of this I got barely any linear travel per motor step, so my rods would be painfully slow. 
+            </p>
+           
+            <img style="padding: 10px; height: 600px" src="assets/Lead%20Screw%20And%20Shell.webp" alt="Circuit Schematic">
+        </div>
+      <div class="image-block image-block-right">
+            <p>
+                <span style="color: #ff3b3b">The shaft should not be threaded.</span> 
+                <br>
+                Friction, as it turns out, is an enemy of the republic. 
+              <br> 
+              <br>
+              While my rendering looks quite pretty if I do say so myself,
+              this design is quite impractical when dealing with the shabby-at-best precision of an FDM printer. 
+              
+              
+            </p>
+           
+            <img style="padding: 10px; height: 500px" src="assets/Shell.webp" alt="Circuit Schematic">
+        </div>
+      <br>
+      <div class="image-block image-block-right">
+            <p>
+                <span style="color: #ff3b3b">The final screw & shaft design.</span> 
+                <br>
+                The shaft only has half a centimeter of thread, the rest is smooth and has enough tolerance
+                for the screw to easily slide through it.
+              <br> 
+              <br>
+              The lead screw is a 7-start thread with 35mm of pitch, a massive increase in the linear travel
+              per revolution. 
+              
+              
+            </p>
+           
+            <img style="padding: 10px;" src="assets/new%20screw%20dope.jpg" alt="Circuit Schematic">
         </div>
         
         
