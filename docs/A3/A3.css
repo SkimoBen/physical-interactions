@@ -69,19 +69,25 @@ p {
     font-weight:lighter;
 }
 .image-block {
-    display: flex;
-    align-items: center;
-    margin: 2em 0;
-    gap: 20px;
+    display: flex; /* Enable flexbox */
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+    width: 100%; /* Ensure it spans the parent container */
+    height: auto; /* Allow flexibility for the image's natural height */
+    margin: 0 auto; /* Center the block itself if necessary */
 }
 
 .image-block img {
-    max-width: 700px;
+    max-width: 70%; /* Ensure it scales down but never overflows */
+    max-height: 900px; /* Limit height */
+    width: auto; /* Maintain aspect ratio */
+    height: auto; /* Maintain aspect ratio */
     border: 2px solid #ff3b3b;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
-    max-height: 900px;
 }
+
+
 
 /* For left-aligned image */
 .image-block-left {
