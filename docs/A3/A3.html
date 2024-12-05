@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StraViz</title>
+    <link href="A3.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cutive+Mono&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Red+Hat+Mono&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://threejs.org/examples/js/loaders/OBJLoader.js"></script>
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "https://cdn.jsdelivr.net/npm/three@v0.149.0/build/three.module.js",
+          "three/addons/": "https://cdn.jsdelivr.net/npm/three@v0.149.0/examples/jsm/"
+        }
+      }
+    </script>
+    "
+</head>
+<body>
+    <div class="container">
+        <div class="top-section">
+            <h1>StraViz: Turning Workout Activities into 3D Visuals</h1>
+            <h2 class = "subtitle">built by ben</h2>
+        </div>
+        <br><br><br>
+        <div class="video-container">
+            <iframe width="560" height="315" src="https://www.youtube.com/embed/B-QN0wNVcVk?si=gqvEY1a-ApqsoisQ" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        </div>
+        <p>
+            I’ve been doing mountain and endurance sports for a pretty long time. I do a lot of them, but the ones I really like doing are alpine climbing and backcountry skiing. The thing about those two sports is that you can’t actually do any serious objectives unless you have a really strong foundation of fitness. Now in general, the easiest way to gain fitness for those two (especially skiing) is by running a lot. The problem with this is that <span style="color: #ff3b3b">running actually kind of sucks. </span> 
+        </p>
+        <div class="image-block">
+            <p>
+                <span style="color: #ff3b3b; font-weight: 800;">Exhibit A</span> 
+                <br>
+
+                I made <a href="https://www.reddit.com/r/running/comments/10l54w9/comment/jr7c5ji/?context=3">this post</a> on r/running and it ended up being one of the highest engagement posts that year. Who would have thought that people in a subreddit dedicated to running would simultaneously harbour so much animosity towards it? 
+                <br>
+                <br>
+                Me. I guessed it. <span style="font-style: oblique">Because running sucks.</span>
+              
+            </p>
+           
+            <img style="padding: 10px; height: 500px" src="assets/runningSucks.png" alt="Circuit Schematic">
+        </div>
+        <p>
+            Ever since I made that post I’ve been thinking of different ways to make it more enjoyable. I’ve combed through the comments numerous times to see what parts about running irk people the most. The most upvoted comment definitely stands out among the rest, it’s so simple, yet somehow captures everything about the problem itself. 
+        </p>
+        
+        <div class="callout">
+            <span style="font-style: oblique">"Starting." -kongofcbus</span> 
+        </div>
+        <p>
+        It’s so true. I know that going for a run will be great, it will be good for me, I’ll feel good after I do it, I’ll be closer to my training goals etc… But for some reason I don’t want to get off the couch. 
+        <br>
+        So how do I motivate myself to go do that run? That’s what StraViz is about. This is my attempt at creating an artistic solution to a physical problem. After completing iteration 1, I  have a lot of ideas for where to take it next, but for now this feels like a good place to record my progress so far. 
+        </p>
+        
+        
+        
+        <p>
+            The idea is to create <span style="font-style: oblique">something</span> that has the following properties
+
+        </p>
+        <div style = "margin-left: 4.5em;" >
+            <ul class="spaced-list" style="color: #ff3b3b;">
+            <li>Motivates me to run more</li>
+            <li>Accessible when I need it</li>
+            <li>Rewards me for "hard" runs</li>
+            <li>Data utility (tells me something helpful)</li>
+            <li>Visually appealing</li>
+
+            </ul>
+        </div>
+        
+                
+        <p>
+            I also restricted myself to making this thing exist in the physical world. There’s way too many mobile apps out there to help people run / track their running progress. Running is a physical thing, so I wanted something tangible to represent it. 
+
+
+        </p>  
+        
+        <div class="horizontal-flex">
+            
+            
+            <div id="3d-model-container" style="width: 50%; height: 400px;">
+                
+            </div>
+            
+            <script type="module" src ="main.js"></script>
+        </div>
+        
+        <h3> There’s an old saying that goes "If you stare at the wall long enough, it will eventually reveal something to you." 
+        </h3>
+        <br>
+        <h2>
+            In my case that saying turned out to have some substance. 
+        </h2>
+        
+        
+        <p>
+            I have a wall in my apartment that was looking a bit too blank. I'm not a fan of empty walls, I like to use the square footage to its maximum potential. That’s where the idea started, I should use my runs to generate some sort of art that grows over time. I’ll be motivated to run more to fill up the empty wall space, and depending on how I generate the art, it could also tell me something about the data, maybe providing some insight into how I should structure my future training. It would at least be more interesting than scrolling through my Strava history. 
+        </p>
+        <br> <br> 
+        <h3>So, what is it?</h3>
+        
+        <div class="image-block image-block-right">
+            <p>It's an art project. </p>
+            <img src="assets/Whole%20Project%20Rendering.webp" style = "height: 500px" alt="Tech box">
+        </div>
+        
+        <br>
+        <br> 
+        <div class="image-block image-block-left">
+            <p>Actually, it's a data science project disguised as an art project.</p>
+            <img src="assets/Whole%20Project%20Rendering.webp" style = "height: 500px" alt="Tech box">
+        </div>
+        
+        <h2>StraViz is a procedurally generated 3D representation of your outdoor activites, it looks cool, and it tells you something helpful. </h2>
+        
+        
+       
+        
+        <div class="image-block image-block-right image-block-list">
+            
+            <div>
+                <p>
+                    <span style="color: #ff3b3b">Here's the user journey</span>
+                </p>
+                <ul class="spaced-list">
+                    <li>Put on an Apple watch</li>
+                    <li>Go for a run, bike, ski, hike. Anything with where the coordinates will change during the workout</li>
+                    <li>Make sure it's recorded by your watch</li>
+                    <li>After the workout, open the StraViz app</li>
+                    <li>Export your activity data as JSON</li>
+                    <li>Open Blender and load the JSON script into it </li>
+                    <li>Run the script to get a 3D model of your run</li>
+                    <li>3D print the run</li>
+                    <li>Stick the print to your wall, next to the one from the day before</li>
+
+                </ul>
+            </div>
+            <img src="assets/Whole%20Project%20Rendering.webp" style = "height: 500px" alt="Tech box">
+            
+        </div>
+        
+    <h3>How does it work?</h3>
+    <p>StraViz can be broken into two components, an iOS app and a Blender script. </p>
+    <br><br> 
+        
+    <p>Workout data can be accessed through Apple's HealthKit API, which is much more convoluted than it should be, but it's actually really powerful. The key data points that I'm extracting for any given workout are </p>
+    <ul class="spaced-list">
+        <li>Heart Rate</li>
+        <li>Coordinates</li>
+        <li>Altitude</li>
+        <li>Pace</li>
+    </ul>
+      <p>These points are the foundation for the procedural generation.  </p>
+      <div class="image-block image-block-left">
+            <p>
+                <span style="color: #ff3b3b">Early lead screw design.</span> 
+                <br>
+              The problem with this design became obvious as soon as I turned on one of the stepper motors. 
+              The 28BYJ-48 motors have a pretty high gear ratio, it takes 4096 steps (in half step mode) to do one 
+              full revolution at the shaft. This screw is single threaded and had a pitch of about 5mm's. Because 
+              of this I got barely any linear travel per motor step, so my rods would be painfully slow. 
+            </p>
+           
+            <img style="padding: 10px; height: 600px" src="assets/Lead%20Screw%20And%20Shell.webp" alt="Circuit Schematic">
+        </div>
+      <div class="image-block image-block-right">
+            <p>
+                <span style="color: #ff3b3b">The shaft should not be threaded.</span> 
+                <br>
+                Friction, as it turns out, is an enemy of the republic. 
+              <br> 
+              <br>
+              While my rendering looks quite pretty if I do say so myself,
+              this design is quite impractical when dealing with the shabby-at-best precision of an FDM printer. 
+              
+              
+            </p>
+           
+            <img style="padding: 10px; height: 500px" src="assets/Shell.webp" alt="Circuit Schematic">
+        </div>
+      <br>
+      
+        
+        
+
+        <p>
+            After the physical construction was nearing a point of "I think this will probably work" I started on the software side.
+            Basically the whole project can be divided into <span style="color: #ff3b3b">3 components</span>
+        </p>
+        
+        <ul>
+            <li> MacOS app (Swift)</li>
+            <li> Communications server (Python)</li>
+            <li> Embedded Arduino code(C++)</li>
+        </ul>
+        <br>
+
+        <h3>
+            I'll Include the Arduino code here <span style="color: #ff3b3b"></span>
+        </h3>
+        <h2>The other code can be found on the projects <a style = "color: #ff3b8b" href="https://github.com/SkimoBen/TopoViz">github repo</a></h2>
+        
+        <div class="code-container">
+            <pre>
+                <code>
+                    const int stepsPerRevolution = 4096; // steps per shaft revolution for the 28BYJ-48 in half-step mode
+                    const float distancePerRevolution = 35; // 35mm
+                    const float distancePerStep = 0.0085; // mm's
+                    const int maxHeight = 130; // 130mm 
+
+                    const int stepCount = 8; // 8 steps per motor revolution 
+                    // 1 turns a coil on, 0 turns it off.
+                    const int stepSequence[8][4] = {
+                      {1, 0, 0, 0}, // Step 1
+                      {1, 1, 0, 0}, // Step 2
+                      {0, 1, 0, 0}, // Step 3
+                      {0, 1, 1, 0}, // Step 4
+                      {0, 0, 1, 0}, // Step 5
+                      {0, 0, 1, 1}, // Step 6
+                      {0, 0, 0, 1}, // Step 7
+                      {1, 0, 0, 1}  // Step 8
+                    };  
+                    const int maxElevation = 3000; // max elevation in meters
+                    const int minElevation = 2000; // min elevation in meters
+
+                    int elevations[10] = {0,0,0,0,0,0,0,0,0,0}; // elevations from the MacOS app
+                    int positions[10] = {0,0,0,0,0,0,0,0,0,0}; // Converted to mm's with my scale
+
+                    class Rod {
+                      public:
+                        // Default constructor
+                        Rod() : current_pos(0), target_pos(0), IN1(0), IN2(0), IN3(0), IN4(0) {}
+
+                        // Constructor to initialize a rod. P1-P4 are the chosen pins on the arduino. start_pos should probably be 0.
+                        Rod(float start_pos, int P1, int P2, int P3, int P4) {
+                          current_pos = start_pos;
+                          target_pos = 0;
+                          IN1 = P1;
+                          IN2 = P2;
+                          IN3 = P3;
+                          IN4 = P4;
+                        }
+
+                        // Go to the maximum rod height
+                        void go_to_max() {
+                          target_pos = maxHeight; 
+                          int steps = steps_from_target();
+                          int direction = direction_from_target();
+                          stepMotor(steps, direction);
+                        }
+
+                        // Go to the minimum rod height
+                        void go_to_zero() {
+                          target_pos = 0;
+                          int steps = steps_from_target();
+                          stepMotor(steps, -1);
+                        }
+
+                        // Go to a specified position in mm's
+                        void go_to_position(int pos) {
+                          target_pos = pos;
+                          int steps = steps_from_target();
+                          int direction = direction_from_target();
+                          stepMotor(steps, direction);
+                        }
+
+                      private: 
+                        float current_pos; // The current position in mm's 
+                        float target_pos; // The target position in mm's 
+                        int IN1;
+                        int IN2;
+                        int IN3;
+                        int IN4; 
+
+                        void stepMotor(int steps, int direction) {
+                          for (int i = 0; i &lt; steps; i++) {
+                            int stepIndex;
+                            if (direction &gt; 0) {
+                              stepIndex = i % stepCount;
+                            } else {
+                              stepIndex = (stepCount - (i % stepCount) - 1) % stepCount;
+                            }
+
+                            // Set the coils based on the step sequence
+                            digitalWrite(IN1, stepSequence[stepIndex][0]);
+                            digitalWrite(IN2, stepSequence[stepIndex][1]);
+                            digitalWrite(IN3, stepSequence[stepIndex][2]);
+                            digitalWrite(IN4, stepSequence[stepIndex][3]);
+
+                            // Delay between steps (adjust for speed)
+                            delay(1); 
+                          }
+
+                          // De-energize the coils after movement
+                          digitalWrite(IN1, LOW);
+                          digitalWrite(IN2, LOW);
+                          digitalWrite(IN3, LOW);
+                          digitalWrite(IN4, LOW);
+
+                          current_pos = target_pos; // Equalize after motor is done.
+                        }
+
+                        // Return the number of steps the motor should spin
+                        int steps_from_target() {
+                          float distance = abs(current_pos - target_pos); 
+                          return round(distance / distancePerStep);
+                        }
+
+                        // Return the direction the motor should spin
+                        int direction_from_target() {
+                          if (target_pos &gt; current_pos) {
+                            return 1;
+                          } else {
+                            return -1;
+                          }
+                        }
+
+                    };
+
+                    const int numRods = 10; // How many rods I have
+                    Rod rods[numRods]; // initialize the list of rods because C++ sucks. 
+
+                    void initializeRods() {
+                        rods[0] = Rod(0, 2, 3, 4, 5);
+                        rods[1] = Rod(0, 6, 7, 8, 9);
+                        rods[2] = Rod(0, 10, 11, 12, 13);
+                        rods[3] = Rod(0, 14, 15, 16, 17);
+                        rods[4] = Rod(0, 18, 19, 20, 21);
+                        rods[5] = Rod(0, 22, 23, 24, 25);
+                        rods[6] = Rod(0, 26, 27, 28, 29);
+                        rods[7] = Rod(0, 30, 31, 32, 33);
+                        rods[8] = Rod(0, 34, 35, 36, 37);
+                        rods[9] = Rod(0, 38, 39, 40, 41);
+                    }
+
+                    // Set the Mega's digital pins as outputs
+                    void set_mega_pins_to_output() {
+                      for (int pin = 0; pin &lt;= 53; pin++) {
+                        pinMode(pin, OUTPUT);
+                      }
+                    }
+
+                    // Set the Uno's digital pins as outputs
+                    void set_uno_pins_to_output() {
+                      for (int pin = 0; pin &lt;= 13; pin++) {
+                        pinMode(pin, OUTPUT);
+                      }
+                    }
+
+                    void setup() {
+                      Serial.begin(9600);
+                      set_mega_pins_to_output();
+                      initializeRods();
+                      delay(2000);
+                    }
+
+                    void loop() {
+                      // calibrate_rods();
+                      if (Serial.available() &gt; 0) {
+                        String data = Serial.readStringUntil('\n');  // Read until newline character
+                        Serial.println("read data successfully");
+                        data.trim();  // Remove any leading/trailing whitespace
+                        // Remove square brackets 
+                        data.replace("[", "");
+                        data.replace("]", "");
+                        Serial.println("replaced []");
+                        int numElevations = parseElevations(data);
+
+                        Serial.print("numElevations: ");
+                        Serial.println(numElevations);
+
+                        // Process the elevations if they exist
+                        if (numElevations &gt; 0) {
+                          Serial.println("Received elevations:");
+                          for (int i = 0; i &lt; numElevations; i++) {
+                            positions_from_elevations(elevations, positions, numRods); // Map the elevations
+                            Serial.println("Updated positions");
+
+                            update_rod_positions(positions); // Move the rods to the new positions.
+                            Serial.println("Moved the rods");
+                          }
+                        }
+                      }
+                    }
+
+                    void update_rod_positions(int positions[]) {
+                      for (int i = 0; i &lt; numRods; i++) {
+                        Rod &amp;rod = rods[i]; // Make a reference to the specific rod
+                        rod.go_to_position(positions[i]);
+                      }
+                    }
+
+                    void positions_from_elevations(int elevations[], int positions[], int size) {
+                        for (int i = 0; i &lt; size; i++) {
+                            if (elevations[i] == 0) {
+                                positions[i] = 0;
+                            } else if (elevations[i] == 1) {
+                                positions[i] = maxHeight;
+                            } else {
+                                int clampedElevation = constrain(elevations[i], minElevation, maxElevation);
+                                positions[i] = map(clampedElevation, minElevation, maxElevation, 0, maxHeight);
+                            }
+                        }
+                    }
+
+                    // Parse the elevations and update the elevations array.
+                    // Return the number of elevation points
+                    int parseElevations(String data) {
+                      int count = 0;
+                      while (data.length() &gt; 0 &amp;&amp; count &lt; numRods) {
+                        int commaIndex = data.indexOf(",");
+                        String valueStr;
+                        if (commaIndex == -1) {
+                          // Last value
+                          valueStr = data;
+                          data = "";
+                        } else {
+                          valueStr = data.substring(0, commaIndex);
+                          data = data.substring(commaIndex + 1);
+                        }
+                        valueStr.trim();  // Remove any extra whitespace
+                        elevations[count] = valueStr.toInt();
+                        count++;
+                      }
+                      return count;
+                    }
+
+                    void calibrate_rods() {
+                      //rods[0].go_to_position(-150);
+                      // rods[1].go_to_position(-40);
+                      // rods[2].go_to_position(-60);
+                      // rods[3].go_to_position(-20);
+                      rods[4].go_to_position(-40);
+                      //rods[5].go_to_position(-1);
+                      //rods[6].go_to_position(-90);
+                      // rods[7].go_to_position(-9);
+                      //rods[8].go_to_position(-25);
+                      // rods[9].go_to_position(-10);
+                    }
+ </code>
+            </pre>
+
+        </div>
+        <h3>References</h3>
+        <p>[1] Hiroshi Ishii, Daniel Leithinger, Sean Follmer, Amit Zoran, Philipp Schoessler, and Jared Counts. 2015. 
+            TRANSFORM: Embodiment of "Radical Atoms" at Milano Design Week. In Proceedings of the 33rd Annual ACM Conference Extended 
+            Abstracts on Human Factors in Computing Systems (CHI EA '15). Association for Computing Machinery, 
+            New York, NY, USA, 687–694. https://doi.org/10.1145/2702613.2702969</p>
+    </div>
+
+</body>
+</html>
