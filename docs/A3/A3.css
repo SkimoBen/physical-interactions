@@ -13,17 +13,17 @@ body {
     box-sizing: border-box;
 }
 .top-section {
-    background-image: 
-        linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1) 500px),
-        url('assets/bg%20v3.webp');
+    background-image:
+        linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,1) 500px),
+        url('assets/X_Couloir_Raw.jpg');
     background-size: cover;
+    background-position: 50% 20%; /* adjust percentages as needed */
     background-blend-mode: overlay;
-    padding-top: 0;
     padding: 20px;
     
     border: 2px solid #ff3b3b;
     border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.5);
 }
 
 .container {
@@ -65,8 +65,7 @@ p {
     line-height: 1.6;
     color: #333;
     margin: 1.5em 0;
-    
-    font-weight:lighter;
+
 }
 .image-block {
     display: flex; /* Enable flexbox */
